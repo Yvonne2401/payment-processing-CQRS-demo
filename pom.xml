@@ -13,27 +13,34 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>payment-command-model</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+
 	<properties>
 		<java.version>17</java.version>
 		<kotlin.version>1.9.25</kotlin.version>
+		<wirespec.spring.integration.version>0.11.8</wirespec.spring.integration.version>
+		<axon.version>4.11.1</axon.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.axonframework</groupId>
+				<artifactId>axon-bom</artifactId>
+				<version>${axon.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.axonframework</groupId>
+			<artifactId>axon-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
@@ -46,6 +53,16 @@
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>community.flock.wirespec.integration</groupId>
+			<artifactId>spring-jvm</artifactId>
+			<version>${wirespec.spring.integration.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>community.flock.wirespec.integration</groupId>
+			<artifactId>jackson-jvm</artifactId>
+			<version>${wirespec.spring.integration.version}</version>
 		</dependency>
 
 		<dependency>
@@ -87,6 +104,35 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>community.flock.wirespec.plugin.maven</groupId>
+				<artifactId>wirespec-maven-plugin</artifactId>
+				<version>0.11.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>community.flock.wirespec.integration</groupId>
+						<artifactId>spring-jvm</artifactId>
+						<version>${wirespec.spring.integration.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>spring</id>
+						<goals>
+							<goal>custom</goal>
+						</goals>
+						<configuration>
+							<input>${project.basedir}/src/main/wirespec</input>
+							<output>${project.build.directory}/generated-sources</output>
+							<emitterClass>community.flock.wirespec.integration.spring.kotlin.emit.SpringKotlinEmitter</emitterClass>
+							<shared>Kotlin</shared>
+							<extension>kt</extension>
+							<packageName>community.flock.wirespec.generated.java</packageName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

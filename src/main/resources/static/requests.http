@@ -1,0 +1,7 @@
+### Process payment
+POST http://{{host}}:{{port}}/carts/{{cartId}}/process-payment
+Content-Type: application/json
+
+{
+  "amountPaid" : 125.94
+}
