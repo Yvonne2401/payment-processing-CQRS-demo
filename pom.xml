@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>21</java.version>
 		<kotlin.version>2.1.10</kotlin.version>
 		<wirespec.spring.integration.version>0.12.0</wirespec.spring.integration.version>
 		<axon.version>4.11.1</axon.version>
