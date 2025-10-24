@@ -1,8 +1,7 @@
 package com.example.demo.cqrs.controller
 
-import com.example.demo.cqrs.command.api.ProcessPayment
-import community.flock.wirespec.generated.java.CartId
-import community.flock.wirespec.generated.java.ProcessPaymentEndpoint
+import community.flock.wirespec.generated.endpoint.ProcessPayment
+import community.flock.wirespec.generated.model.CartId
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
@@ -12,15 +11,15 @@ import java.util.UUID
 @RestController
 class ProcessPaymentController(
     val commandGateway: CommandGateway,
-) : ProcessPaymentEndpoint.Handler {
-    override suspend fun processPayment(request: ProcessPaymentEndpoint.Request): ProcessPaymentEndpoint.Response<*> {
+) : ProcessPayment.Handler {
+    override suspend fun processPayment(request: ProcessPayment.Request): ProcessPayment.Response<*> {
         commandGateway.send<ProcessPayment>(
-            ProcessPayment(
+            com.example.demo.cqrs.command.api.ProcessPayment(
                 UUID.fromString(request.path.cartId),
                 BigDecimal(request.body.amountPaid)
                     .setScale(2, RoundingMode.HALF_UP),
             ),
         )
-        return ProcessPaymentEndpoint.Response200(CartId(request.path.cartId))
+        return ProcessPayment.Response200(CartId(request.path.cartId))
     }
 }
