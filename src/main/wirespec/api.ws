@@ -5,6 +5,6 @@ type ProcessPayment {
   amountPaid: Number
 }
 
-endpoint ProcessPayment POST ProcessPayment /carts/{cartId: String}/process-payment -> {
+endpoint ProcessPaymentEndpoint POST ProcessPayment /carts/{cartId: String}/process-payment -> {
     200 -> CartId
 }
